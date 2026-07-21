@@ -1,0 +1,76 @@
+cff-version: 1.2.0
+title: "GeoPaletteR — Colour space conversions for geospatial raster data"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: Pawelec
+    given-names: Igor
+    affiliation: "University of Agriculture in Kraków, Poland"
+    email: igor.pawelec@urk.edu.pl
+    orcid: "https://orcid.org/0009-0005-9798-3596"
+repository-code: "https://github.com/igorpawelec/GeoPaletteR"
+license: GPL-3.0-or-later
+version: "0.1.0"
+date-released: "2026-07-21"
+keywords:
+  - colour space
+  - CIELAB
+  - CIECAM02
+  - Oklab
+  - Jzazbz
+  - remote sensing
+  - raster
+references:
+  - type: article
+    title: "The CIECAM02 Color Appearance Model"
+    authors:
+      - family-names: Moroney
+        given-names: Nathan
+      - family-names: Fairchild
+        given-names: Mark D.
+      - family-names: Hunt
+        given-names: Robert W. G.
+      - family-names: Li
+        given-names: Changjun
+      - family-names: Luo
+        given-names: M. Ronnier
+      - family-names: Newman
+        given-names: Todd
+    journal: "Color and Imaging Conference (CIC10)"
+    year: 2002
+    notes: "Implemented by rgb_to_cam02()."
+  - type: article
+    title: >-
+      Perceptually uniform color space for image signals including high
+      dynamic range and wide gamut
+    authors:
+      - family-names: Safdar
+        given-names: Muhammad
+      - family-names: Cui
+        given-names: Guihua
+      - family-names: Kim
+        given-names: Youn Jin
+      - family-names: Luo
+        given-names: M. Ronnier
+    journal: "Optics Express"
+    year: 2017
+    doi: 10.1364/OE.25.015131
+    notes: "Implemented by rgb_to_jzazbz() and rgb_to_jzczhz()."
+  - type: generic
+    title: "A perceptual color space for image processing"
+    authors:
+      - family-names: Ottosson
+        given-names: Björn
+    year: 2020
+    url: "https://bottosson.github.io/posts/oklab/"
+    notes: "Implemented by rgb_to_oklab() and oklab_to_rgb()."
+  - type: software
+    title: "GeoPalette — the Python implementation of the same conversions"
+    authors:
+      - family-names: Pawelec
+        given-names: Igor
+    url: "https://github.com/igorpawelec/GeoPalette"
+    notes: >-
+      Agreement is measured rather than exact: GeoPalette stores intermediates
+      in single precision where R has only double, so the two agree to better
+      than 1.7e-6 of each component's range. See ?GeoPaletteR-agreement.

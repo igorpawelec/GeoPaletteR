@@ -117,8 +117,12 @@ achromatic pixels in both packages.
 
 ## Citation
 
-Pawelec, I. (2025). *GeoPaletteR: Colour Space Conversions for Geospatial
+Pawelec, I. (2026). *GeoPaletteR: Colour Space Conversions for Geospatial
 Raster Data*. R package version 0.1.0.
+https://github.com/igorpawelec/GeoPaletteR
+
+Machine-readable metadata, including the papers the colour appearance models
+come from, is in [`CITATION.cff`](CITATION.cff).
 
 ## Licence
 
