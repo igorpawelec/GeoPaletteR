@@ -1,0 +1,28 @@
+Package: GeoPaletteR
+Type: Package
+Title: Colour Space Conversions for Geospatial Raster Data
+Version: 0.1.0
+Authors@R: person("Igor", "Pawelec", email = "igor.pawelec@urk.edu.pl",
+                  role = c("aut", "cre"),
+                  comment = c(ORCID = "0009-0005-9798-3596"))
+Description: Converts red-green-blue raster bands into fifteen colour
+    spaces used in remote sensing, image segmentation and forestry, among
+    them CIELAB, CIELUV, DIN99, Oklab, CIECAM02 and Jzazbz, with inverse
+    transforms back to red-green-blue for four of them. Operations are
+    vectorised over whole bands, so a scene is converted without looping
+    over pixels, and the package is plain R with no compiled code and no
+    required dependencies. Results track the 'GeoPalette' Python package,
+    which stores intermediates in single precision where R has only
+    double, so agreement is to that precision rather than exact; the
+    tolerances are measured and documented. Colour appearance modelling
+    follows Moroney and others (2002) for CIECAM02, Safdar and others
+    (2017) <doi:10.1364/OE.25.015131> for Jzazbz, and Ottosson (2020) for
+    Oklab.
+License: GPL-3
+Encoding: UTF-8
+Depends: R (>= 3.6.0)
+Suggests: terra, farver
+URL: https://github.com/igorpawelec/GeoPaletteR
+BugReports: https://github.com/igorpawelec/GeoPaletteR/issues
+RoxygenNote: 8.0.0
+NeedsCompilation: no

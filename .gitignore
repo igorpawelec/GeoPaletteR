@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.tar.gz
+*.Rcheck/
+
+# Written by tools/generate_geopalette_reference.py; regenerated on demand
+# and in CI, never committed.
+tools/reference/

@@ -1,0 +1,110 @@
+# R CMD check across the platforms CRAN builds on, plus the cross-package
+# comparison against GeoPalette.
+#
+# The package has no compiled code and no required dependencies, so the
+# matrix is about R-version drift rather than toolchains. oldrel-1 is here
+# because DESCRIPTION declares R (>= 3.6.0) and nothing else would catch a
+# newer base function slipping in.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+name: R-CMD-check
+
+permissions: read-all
+
+jobs:
+  R-CMD-check:
+    runs-on: ${{ matrix.config.os }}
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {os: macos-latest,   r: 'release'}
+          - {os: windows-latest, r: 'release'}
+          - {os: ubuntu-latest,  r: 'devel', http-user-agent: 'release'}
+          - {os: ubuntu-latest,  r: 'release'}
+          - {os: ubuntu-latest,  r: 'oldrel-1'}
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Without pandoc, `checking top-level files` NOTEs on README.md and
+      # NEWS.md, which the package does ship.
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: ${{ matrix.config.r }}
+          http-user-agent: ${{ matrix.config.http-user-agent }}
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      - uses: r-lib/actions/check-r-package@v2
+        with:
+          # --no-manual skips the PDF manual, which needs a LaTeX install.
+          # That is a real CRAN check and it is NOT covered here: run
+          # `R CMD check --as-cran` locally with LaTeX before submitting.
+          args: 'c("--no-manual", "--as-cran")'
+          build_args: 'c("--no-manual")'
+          # NOTEs do not fail: a first submission always NOTEs
+          # "New submission", and there is no way to satisfy it.
+          error-on: '"warning"'
+          upload-snapshots: true
+
+  agreement:
+    # Puts a number on how far this package sits from GeoPalette. It is a
+    # measurement, not a pass/fail equality check — the two cannot be equal,
+    # because GeoPalette stores single precision and R has only double. The
+    # script fails only if a component drifts past its documented tolerance
+    # or if the component names stop matching.
+    runs-on: ubuntu-latest
+    name: agreement with GeoPalette
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          needs: check
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install GeoPalette
+        # From git, not PyPI: GeoPalette is not published yet. Switch this
+        # to `pip install geopalette` once it is, so the comparison runs
+        # against the release rather than the tip of main.
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "geopalette @ git+https://github.com/igorpawelec/GeoPalette.git"
+
+      - name: Install GeoPaletteR
+        run: R CMD INSTALL .
+
+      - name: Generate reference bands from GeoPalette
+        run: python tools/generate_geopalette_reference.py
+
+      - name: Compare
+        run: Rscript tools/cross_validate_against_geopalette.R
