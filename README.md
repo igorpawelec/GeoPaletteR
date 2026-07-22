@@ -1,6 +1,6 @@
 # GeoPaletteR
 
-<img src="https://raw.githubusercontent.com/igorpawelec/pyhrg/main/www/geopaletter_logo.png" alt="GeoPaletteRlogo" align="right" width="200"/>
+<img src="https://raw.githubusercontent.com/igorpawelec/GeoPaletteR/main/www/geopaletter_logo.png" alt="GeoPaletteRlogo" align="right" width="200"/>
 
 [![R-CMD-check](https://github.com/igorpawelec/GeoPaletteR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/igorpawelec/GeoPaletteR/actions/workflows/R-CMD-check.yaml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
