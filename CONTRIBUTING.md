@@ -73,6 +73,18 @@ Add a new space to both packages in the same change, or to neither. A
 conversion that exists on one side only is the failure this pair is built to
 avoid.
 
+## The pinned twin
+
+The agreement job installs GeoPalette from a **tag**, not the tip of its main
+branch — see `.github/workflows/R-CMD-check.yaml`. Unpinned, a commit in
+GeoPalette could turn this repository's CI red without anything changing here,
+and the failure would read as a defect in this package.
+
+The cost is that the pin goes stale. When GeoPalette releases and the conversions
+changes, bump the tag in the workflow and re-run the agreement job. A stale
+pin proves agreement against an old GeoPalette, which is quieter than a red
+build and therefore worse.
+
 ## Pull requests
 
 - Add a test that fails before your change and passes after. Confirm it fails

@@ -93,12 +93,22 @@ jobs:
           python-version: '3.12'
 
       - name: Install GeoPalette
-        # From git, not PyPI: GeoPalette is not published yet. Switch this
-        # to `pip install geopalette` once it is, so the comparison runs
-        # against the release rather than the tip of main.
+        # Pinned to a tag, not the tip of main. Unpinned, a commit in
+        # GeoPalette could turn this job red without anything changing here,
+        # and the failure would look like a defect in GeoPaletteR. The
+        # comparison is also more honest against a release than against
+        # whatever main happens to hold.
+        #
+        # BUMP THIS when GeoPalette releases and the conversions change.
+        # A stale pin means the agreement is being proved against an old
+        # GeoPalette, which is a quieter failure than a red build: see
+        # CONTRIBUTING.md.
+        #
+        # From git rather than PyPI because GeoPalette is not published;
+        # `pip install geopalette==0.6.1` replaces this once it is.
         run: |
           python -m pip install --upgrade pip
-          python -m pip install "geopalette @ git+https://github.com/igorpawelec/GeoPalette.git"
+          python -m pip install "geopalette @ git+https://github.com/igorpawelec/GeoPalette.git@v0.6.1"
 
       - name: Check the version declarations agree
         # CITATION.cff is .Rbuildignore'd, so R CMD check never sees it.
