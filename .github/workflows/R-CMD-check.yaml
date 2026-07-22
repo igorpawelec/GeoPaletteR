@@ -100,6 +100,10 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install "geopalette @ git+https://github.com/igorpawelec/GeoPalette.git"
 
+      - name: Check the version declarations agree
+        # CITATION.cff is .Rbuildignore'd, so R CMD check never sees it.
+        run: Rscript tools/check_versions.R
+
       - name: Install GeoPaletteR
         run: R CMD INSTALL .
 
